@@ -1,40 +1,80 @@
-# StockWise
-# 📦 StockWise
+# 📦 StockWise – Inventory Management App
 
-**StockWise** is an inventory management application built using **Node.js**, **Express**, **PostgreSQL**, and **EJS** for server-side rendering. It supports **user registration/login**, and lets users manage a list of inventory items.
-
----
-
-## 🚀 Features
-
-- ✅ User Registration & Login (using bcrypt + express-session)
-- ✅ Add, Edit, Delete inventory items
-- ✅ Low-stock visual warning (e.g., quantity < 5)
-- ✅ Sort items by category or price
-- ✅ EJS templates with forms for interaction
+StockWise is a full-stack inventory management application built with **Node.js**, **PostgreSQL**, **React**, and **Material UI (MUI)**. It includes user authentication, inventory CRUD, visual insights, and CSV export. Built for portfolio and practical business use.
 
 ---
 
-## 🛠️ Tech Stack
+## 🔧 Features
 
-| Tech          | Use                             |
-|---------------|----------------------------------|
-| Node.js       | Backend runtime                 |
-| Express.js    | Web server                      |
-| PostgreSQL    | Database                        |
-| EJS           | HTML templating engine          |
-| bcrypt        | Password hashing                |
-| express-session | User session management       |
+### ✅ Authentication
+- Register/Login/Logout using `express-session`
+- Passwords hashed with `bcrypt`
+- Session-based protection for all inventory routes
+
+### 📊 Inventory Management
+- Add, update, delete inventory items
+- View inventory sorted by name, category, or price
+- Search inventory items by name
+- Low-stock warning with row highlighting
+
+### 📈 Visual Insights
+- Pie chart showing inventory value per category (built with **Recharts**)
+
+### 📁 Export
+- Download inventory table as a `.csv` file
+
+### 🛡️ Role-Based Access (Planned)
+- `admin`: Full access to add/edit/delete
+- `viewer`: Read-only access
 
 ---
 
-## 📁 Project Structure
+## 🗃️ Tech Stack
 
-stockwise/
-└── backend/
-    ├── index.js           ← main server file
-    ├── db.js              ← PostgreSQL connection using pg.Client
-    ├── views/
-    │   └── index.ejs      ← EJS template
-    ├── public/            ← static files (CSS/images)
-    └── .env               ← environment variables
+| Layer      | Technology                        |
+|------------|------------------------------------|
+| Frontend   | React, React Router, Material UI   |
+| Charts     | Recharts                           |
+| Backend    | Express.js, Node.js                |
+| Database   | PostgreSQL                         |
+| Auth       | express-session, bcrypt            |
+| API        | RESTful JSON API                   |
+| Styling    | Material UI (MUI)                  |
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Backend (Node.js + Express + PostgreSQL)
+
+```bash
+cd backend
+npm install
+##.env
+PORT=3000
+PGUSER=postgres
+PGPASSWORD=1234
+PGHOST=localhost
+PGPORT=5433
+PGDATABASE=stockwise
+SESSION_SECRET=myverysecuresecret
+##SQL
+-- Users
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  role TEXT DEFAULT 'admin'
+);
+
+-- Inventory
+CREATE TABLE inventory (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  quantity INT NOT NULL,
+  category TEXT,
+  price FLOAT
+);
+##Start the server 
+node index.js
+npm start
