@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StockWise</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .low-stock {
+      background-color: #cb7878;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input {
+      margin: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>StockWise Inventory</h1>
+
+  <!-- Add Form -->
+  <form action="/add" method="POST">
+    <input name="name" placeholder="Name" required>
+    <input name="quantity" type="number" placeholder="Quantity" required>
+    <input name="category" placeholder="Category">
+    <input name="price" type="number" step="0.01" placeholder="Price">
+    <button type="submit">Add</button>
+  </form>
+
+  <!-- Sort Links -->
+  <p>
+    Sort by:
+    <a href="/">Default</a> |
+    <a href="/?sort=category">Category</a> |
+    <a href="/?sort=price">Price</a>
+  </p>
+
+  <!-- Inventory Table -->
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Qty</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
+
+    <% items.forEach(item => { %>
+      <tr class="<%= parseInt(item.quantity) < 5 ? 'low-stock' : '' %>">
+        <td><%= item.id %></td>
+        <td><%= item.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= item.category %></td>
+        <td><%= item.price %></td>
+
+        <!-- Update Form -->
+        <td>
+          <form method="POST" action="/update">
+            <input type="hidden" name="id" value="<%= item.id %>">
+            <input type="text" name="name" value="<%= item.name %>" required>
+            <input type="number" name="quantity" value="<%= item.quantity %>" required>
+            <input type="text" name="category" value="<%= item.category %>">
+            <input type="number" name="price" value="<%= item.price %>" step="0.01">
+            <button type="submit">Update</button>
+          </form>
+        </td>
+
+        <!-- Delete Form -->
+        <td>
+          <form method="POST" action="/delete">
+            <input type="hidden" name="id" value="<%= item.id %>">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <!-- Logout Button -->
+  <form method="POST" action="/logout">
+    <button type="submit">Logout</button>
+  </form>
+</body>
+</html>
